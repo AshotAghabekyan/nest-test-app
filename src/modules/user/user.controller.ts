@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Delete, Param, Req, ParseIntPipe, Body, Patch, UseGuards, ForbiddenException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { PatchUserDto, SearchUserDto, UserDto, UserResponseDto } from './model/user.dto';
-import { UserEntity } from './model/user.model';
+import { UserEntity } from './interfaces/user.interfaces';
 import { AuthGuard } from '../auth/auth.guard';
 import { Request } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import { SwaggerPatchUserDto, SwaggerSearchUserDto, SwaggerUserDto, SwaggerUserResponseDto } from './swagger/user.swagger';
 
 
 
@@ -22,8 +23,8 @@ export class UserController {
 
     @Get('/search')
     @ApiOperation({ summary: 'Find a user by email' })
-    @ApiBody({description: "email of target user", type: SearchUserDto})
-    @ApiResponse({  type: UserResponseDto })
+    @ApiBody({description: "email of target user", type: SwaggerSearchUserDto})
+    @ApiResponse({  type: SwaggerUserResponseDto })
     public async findUserByEmail(@Body() body: SearchUserDto) {
         const email: string = body.email;
         const user: UserEntity = await this.userService.findUserByEmail(email);
@@ -34,7 +35,7 @@ export class UserController {
     @Get('/:id')
     @ApiOperation({ summary: 'Find a user by ID' })
     @ApiParam({ name: 'id', description: 'User ID' })
-    @ApiResponse({ type: UserResponseDto })
+    @ApiResponse({ type: SwaggerUserResponseDto })
     public async findUserById(@Param('id', ParseIntPipe) userId: number) {
         const user: UserEntity = await this.userService.findUserById(userId);
         return new UserResponseDto(user);
@@ -44,7 +45,7 @@ export class UserController {
     @UseGuards(AuthGuard)
     @Get('/')
     @ApiOperation({ summary: 'Find all users' })
-    @ApiResponse({  type: [UserResponseDto] })
+    @ApiResponse({  type: [SwaggerUserResponseDto] })
     public async findAllUsers() {
         const allUsers: UserEntity[] = await this.userService.findAllUsers();
         return allUsers.map((user: UserEntity) => new UserResponseDto(user));
@@ -53,8 +54,8 @@ export class UserController {
 
     @Post('/')
     @ApiOperation({ summary: 'Create a new user' })
-    @ApiBody({ type: UserDto })
-    @ApiResponse({ type: UserResponseDto })
+    @ApiBody({ type: SwaggerUserDto })
+    @ApiResponse({ type: SwaggerUserResponseDto })
     public async createUser(@Body() userDto: UserDto) {
         const createdUser: UserEntity = await this.userService.createUser(userDto);
         return new UserResponseDto(createdUser);
@@ -80,8 +81,8 @@ export class UserController {
     @Patch('/:id')
     @ApiOperation({ summary: 'Update user information' })
     @ApiParam({ name: 'id', description: 'User ID' })
-    @ApiBody({ type: UserDto })
-    @ApiResponse({ status: 200, description: 'User information updated', type: UserResponseDto })
+    @ApiBody({ type: SwaggerPatchUserDto })
+    @ApiResponse({ status: 200, description: 'User information updated', type: SwaggerUserResponseDto })
     public async updateUserInfo(@Param('id', ParseIntPipe) userId: number, @Body() patchUserDto: PatchUserDto, @Req() req: Request) {
         const reqUserId: number = +req['user'].id;
         if (reqUserId !== userId) {

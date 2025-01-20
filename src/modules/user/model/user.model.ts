@@ -1,18 +1,12 @@
 import { Model, Column, PrimaryKey, AutoIncrement, Table, Unique, HasMany } from "sequelize-typescript";
-import { UserDto } from "./user.dto";
 import { Product } from "src/modules/product/model/product.model";
+import { IUserDto, UserEntity } from "../interfaces/user.interfaces";
 
 
-export interface UserEntity {
-    id: number;
-    username: string;
-    age: number;
-    email: string;
-    password: string;
-}
+
 
 @Table
-export class User extends Model<UserEntity, UserDto> {
+export class User extends Model<UserEntity, IUserDto> {
 
     @PrimaryKey
     @AutoIncrement

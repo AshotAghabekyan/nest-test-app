@@ -1,6 +1,4 @@
-import { PatchUserDto, UserDto } from "../model/user.dto"
-import { UserEntity } from "../model/user.model";
-
+import { IPatchUserDto, IUserDto, UserEntity } from "../interfaces/user.interfaces";
 
 
 export interface IUserRepository {
@@ -8,8 +6,8 @@ export interface IUserRepository {
     findUserByEmail(email: string): Promise<UserEntity>,
     findAllUsers(): Promise<UserEntity[]>,
     deleteUser(id: number): Promise<boolean>,
-    createUser(userDto: UserDto): Promise<UserEntity>,
-    updateUser(id: number, patchUserDto: PatchUserDto): Promise<UserEntity>
+    createUser(userDto: IUserDto): Promise<UserEntity>,
+    updateUser(id: number, patchUserDto: IPatchUserDto): Promise<UserEntity>
 }
 
 

@@ -1,6 +1,6 @@
 import { InjectModel } from "@nestjs/sequelize";
 import { PatchUserDto, UserDto } from "../model/user.dto";
-import { UserEntity } from "../model/user.model";
+import { UserEntity } from "../interfaces/user.interfaces";
 import { User } from "../model/user.model";
 import { IUserRepository } from "./user.repository";
 import { Injectable } from "@nestjs/common";

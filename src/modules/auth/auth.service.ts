@@ -4,8 +4,7 @@ import { UserService } from "../user/user.service";
 import { CryptoProvider } from "../crypto/crypto.provider";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
-import { UserEntity } from "../user/model/user.model";
-
+import { UserEntity } from "../user/interfaces/user.interfaces";
 
 
 

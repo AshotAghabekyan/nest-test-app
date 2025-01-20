@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { IUserRepository, USER_REPOSITORY_TOKEN } from "./repository/user.repository";
-import { PatchUserDto, UserDto } from "./model/user.dto";
-import { UserEntity } from "./model/user.model";
+import { IPatchUserDto, IUserDto } from "./interfaces/user.interfaces";
+import { UserEntity } from "./interfaces/user.interfaces";
 import { CryptoProvider } from "../crypto/crypto.provider";
 
 
@@ -19,7 +19,7 @@ export class UserService {
         this.cryptoProvider = cryptoProvider;
     }
 
-    async createUser(userDto: UserDto): Promise<UserEntity> {
+    async createUser(userDto: IUserDto): Promise<UserEntity> {
         const isUserExist: UserEntity = await this.userRepository.findUserByEmail(userDto.email);
         if (isUserExist) {
             throw new BadRequestException('The user with this email already exist');
@@ -61,7 +61,7 @@ export class UserService {
     }
 
 
-    async updateUser(userId: number, patchUserDto: PatchUserDto) {
+    async updateUser(userId: number, patchUserDto: IPatchUserDto) {
         const isUserExist: UserEntity = await this.userRepository.findUserById(userId);
         if (!isUserExist) {
             throw new NotFoundException('The user does not found');

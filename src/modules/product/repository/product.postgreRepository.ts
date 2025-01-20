@@ -1,10 +1,9 @@
 import { InjectModel } from "@nestjs/sequelize";
 import { Product } from "../model/product.model";
 import { IProductRepository } from "./product.repository";
-import { Category, ProductDto, ProductPatchDto } from "../model/product.dto";
+import { Category } from "../model/product.dto";
 import { ProductRepositoryException } from "./product.repositoryException";
-import { ProductEntity } from "../model/product.model";
-
+import { IPatchProductDto, IProductDto, ProductEntity } from "../interfaces/product.interfaces";
 
 
 export class PostgreProductRepository implements IProductRepository {
@@ -15,7 +14,7 @@ export class PostgreProductRepository implements IProductRepository {
     }
 
 
-    public async create(productDto: ProductDto, ownerId: number): Promise<ProductEntity> {
+    public async create(productDto: IProductDto, ownerId: number): Promise<ProductEntity> {
         try {
             const createdProduct: ProductEntity = await this.productModel.create({...productDto, ownerId});
             return createdProduct;
@@ -37,7 +36,7 @@ export class PostgreProductRepository implements IProductRepository {
     }
 
 
-    public async update(productId: number, productPatchDto: ProductPatchDto) {
+    public async update(productId: number, productPatchDto: IPatchProductDto) {
         try {
             const [updatedRows] = await this.productModel.update(productPatchDto, {
                 where: {

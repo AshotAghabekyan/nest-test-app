@@ -1,23 +1,9 @@
 import { Model, Table, PrimaryKey, ForeignKey, Column, AutoIncrement, BelongsTo } from "sequelize-typescript";
 import { User } from "src/modules/user/model/user.model";
 import { Category } from "./product.dto";
+import { ProductCreationAttr, ProductEntity } from "../interfaces/product.interfaces";
 
 
-interface ProductCreationAttr {
-    title: string;
-    category: Category,
-    price: number,
-    ownerId: number,
-}
-
-
-export class ProductEntity {
-    productId: number;
-    ownerId: number;
-    title: string;
-    price: number;
-    category: Category;
-}
 
 
 

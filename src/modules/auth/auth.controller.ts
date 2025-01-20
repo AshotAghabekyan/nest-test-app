@@ -1,5 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { AuthCredentials, JwtToken,SwaggerAuthCredentials, SwaggerJwtToken, SwaggerRefreshToken } from './interface/auth.interface';
+import { AuthCredentials, JwtToken} from './interface/auth.interface';
+import { SwaggerAuthCredentials, SwaggerJwtToken, SwaggerRefreshToken } from './swagger/auth.swagger';
 import { AuthService } from './auth.service';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 

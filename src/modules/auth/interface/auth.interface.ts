@@ -1,5 +1,3 @@
-import { ApiProperty } from "@nestjs/swagger";
-
 
 
 export interface AuthCredentials {
@@ -20,25 +18,8 @@ export interface JwtToken {
 }
 
 
-
-export class SwaggerRefreshToken {
-    @ApiProperty()
-    refreshToken: string;
+export interface AccessToken {
+    token: string
 }
 
 
-export class SwaggerAuthCredentials implements AuthCredentials {
-    @ApiProperty()
-    email: string;
-
-    @ApiProperty()
-    password: string;
-}
-
-export class SwaggerJwtToken implements JwtToken {
-    @ApiProperty()
-    accessToken: string;
-
-    @ApiProperty()
-    refreshToken: string;
-}

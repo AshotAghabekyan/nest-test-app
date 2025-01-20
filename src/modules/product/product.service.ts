@@ -1,8 +1,7 @@
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { Category, ProductDto, ProductPatchDto } from "./model/product.dto";
+import { Category } from "./model/product.dto";
 import { IProductRepository, PRODUCT_REPOSITORY_TOKEN } from "./repository/product.repository";
-import { ProductEntity } from "./model/product.model";
-
+import { IPatchProductDto, IProductDto, ProductEntity } from "./interfaces/product.interfaces";
 
 
 export class ProductPermissionService {
@@ -32,7 +31,7 @@ export class ProductService {
     }
 
 
-    public async create(productDto: ProductDto, ownerId: number) {
+    public async create(productDto: IProductDto, ownerId: number) {
         const createdProduct: ProductEntity = await this.productRepository.create(productDto, ownerId);
         if (!createdProduct) {
             throw new BadRequestException('The product was not created');
@@ -57,7 +56,7 @@ export class ProductService {
     }
 
     
-    public async update(productId: number, requestingUserId: number, productPatchDto: ProductPatchDto) {
+    public async update(productId: number, requestingUserId: number, productPatchDto: IPatchProductDto) {
         const isProductExist: ProductEntity = await this.findById(productId);
         if (!isProductExist) {
             throw new NotFoundException('The product does not exist');

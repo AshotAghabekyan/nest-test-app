@@ -1,8 +1,9 @@
 import { Controller, Get, Patch, Post, Delete, Param, ParseIntPipe, Body, Req, UseGuards } from "@nestjs/common";
 import { ProductService } from "./product.service";
-import { Category, ProductDto, ProductPatchDto, ProductResponseDto } from "./model/product.dto";
+import { Category, ProductDto, ProductPatchDto } from "./model/product.dto";
 import { AuthGuard } from "../auth/auth.guard";
 import { ApiOperation, ApiResponse, ApiTags, ApiParam, ApiBody } from "@nestjs/swagger";
+import { SwaggerPatchProductDto, SwaggerProductDto, SwaggerProductResponseDto } from "./swagger/product.swagger";
 
 
 
@@ -17,7 +18,7 @@ export class ProductController {
 
     @Get('/')
     @ApiOperation({ summary: 'Get all products' })
-    @ApiResponse({ status: 200, description: 'List of all products', type: [ ProductResponseDto] })  // Указываем тип в массиве
+    @ApiResponse({ status: 200, description: 'List of all products', type: [ SwaggerProductResponseDto] })  // Указываем тип в массиве
     public async findAll() {
         return await this.productService.findAll();
     }
@@ -26,7 +27,7 @@ export class ProductController {
     @Get('/:id')
     @ApiOperation({ summary: 'Get product by ID' })
     @ApiParam({ name: 'id', type: 'number', description: 'Product ID' })
-    @ApiResponse({ type: ProductResponseDto })
+    @ApiResponse({ type: SwaggerProductResponseDto })
     public async findById(@Param('id', ParseIntPipe) productId: number) {
         return await this.productService.findById(productId);
     }
@@ -35,7 +36,7 @@ export class ProductController {
     @Get("/category/:category")
     @ApiOperation({ summary: 'Get products by category' })
     @ApiParam({ name: 'category', type: 'string', description: 'Product category' })
-    @ApiResponse({ type: [ProductResponseDto] })  
+    @ApiResponse({ type: [SwaggerProductResponseDto] })  
     public async findByCategory(@Param("category") productCategory: Category) {
         return await this.productService.findByCategory(productCategory);
     }
@@ -44,7 +45,7 @@ export class ProductController {
     @Get("/user/:userId")
     @ApiOperation({ summary: 'Get products by owner' })
     @ApiParam({ name: 'userId', type: 'number', description: 'User ID (Owner)' })
-    @ApiResponse({  type: [ProductResponseDto] })
+    @ApiResponse({  type: [SwaggerProductResponseDto] })
     public async findByOwner(@Param('userId', ParseIntPipe) ownerId: number) {
         return await this.productService.findByOwner(ownerId);
     }
@@ -53,8 +54,8 @@ export class ProductController {
     @UseGuards(AuthGuard)
     @Post("/")
     @ApiOperation({ summary: 'Create a new product' })
-    @ApiBody({ type: ProductDto })
-    @ApiResponse({ type: ProductResponseDto })
+    @ApiBody({ type: SwaggerProductDto })
+    @ApiResponse({ type: SwaggerProductResponseDto })
     public async create(@Body() productDto: ProductDto, @Req() req: Request) {
         const ownerId: number = +req['user'].id;
         return await this.productService.create(productDto, ownerId);
@@ -76,8 +77,8 @@ export class ProductController {
     @Patch("/:id")
     @ApiOperation({ summary: 'Update a product' })
     @ApiParam({ name: 'id', type: 'number', description: 'Product ID' })
-    @ApiBody({ type: ProductPatchDto })
-    @ApiResponse({ status: 200, description: 'Product successfully updated', type: ProductResponseDto })
+    @ApiBody({ type: SwaggerPatchProductDto })
+    @ApiResponse({ status: 200, description: 'Product successfully updated', type: SwaggerProductResponseDto })
     public async update(@Param("id", ParseIntPipe) productId: number, @Body() patchDto: ProductPatchDto, @Req() req: Request) {
         const requestingUserId: number = +req['user'].id;
         return await this.productService.update(productId, requestingUserId, patchDto);

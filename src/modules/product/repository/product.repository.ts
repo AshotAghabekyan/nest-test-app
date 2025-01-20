@@ -1,5 +1,5 @@
-import { Category, ProductDto, ProductPatchDto } from "../model/product.dto";
-import { ProductEntity } from "../model/product.model";
+import { Category } from "../model/product.dto";
+import { IPatchProductDto, IProductDto, ProductEntity } from "../interfaces/product.interfaces";
 
 
 export interface IProductRepository {
@@ -7,9 +7,9 @@ export interface IProductRepository {
     findProductsByOwner(ownerId: number): Promise<ProductEntity[]>;
     findAll(): Promise<ProductEntity[]>;
     filterByCategory(category: Category): Promise<ProductEntity[]>;
-    create(productDto: ProductDto, ownerId: number): Promise<ProductEntity>;
+    create(productDto: IProductDto, ownerId: number): Promise<ProductEntity>;
     delete(productId: number): Promise<boolean>;
-    update(productId: number, productPatchDto: ProductPatchDto): Promise<ProductEntity>;
+    update(productId: number, productPatchDto: IPatchProductDto): Promise<ProductEntity>;
 }
 
 
